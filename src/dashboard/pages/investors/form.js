@@ -20,6 +20,9 @@ const validationSchema = (mode) =>
         .string("Enter your email")
         .email("Enter a valid email")
         .required("Email is required"),
+      public_wallet_address: yup
+        .string("Public Wallet Address")
+        .required("Wallet Address is reequired."),
       password: mode === "create" 
         ? yup
             .string("Enter your password")
@@ -87,6 +90,22 @@ export default function Form({ initialValues, onSubmit, title, buttonText, mode 
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       error={formik.touched.email && Boolean(formik.errors.email)}
+                      helperText={formik.touched.email && formik.errors.email}
+                    />
+                  </Box>
+
+
+
+                  <Box sx={{ marginTop: "15px" }}>
+                    <FormLabel sx={{ marginBottom: "8px", display: "block" }}>Public Wallet Address</FormLabel>
+                    <TextField
+                      fullWidth
+                      id="public_wallet_address"
+                      name="public_wallet_address"
+                      value={formik.values.public_wallet_address}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.public_wallet_address && Boolean(formik.errors.public_wallet_address)}
                       helperText={formik.touched.email && formik.errors.email}
                     />
                   </Box>

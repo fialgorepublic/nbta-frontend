@@ -55,6 +55,7 @@ export default function NewInvestor() {
           last_name: "",
           email: "",
           password: "",
+          public_wallet_address: ""
         }}
         onSubmit={handleCreateInvestor}
         title="Create New Investor"
