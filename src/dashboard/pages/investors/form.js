@@ -13,23 +13,23 @@ import * as yup from "yup";
 import CustomCard from "../../components/CustomCard";
 import { Helmet } from "react-helmet";
 const validationSchema = (mode) =>
-    yup.object({
-      first_name: yup.string("Enter First Name").required("First Name is required"),
-      last_name: yup.string("Enter Last Name").required("Last Name is required"),
-      email: yup
-        .string("Enter your email")
-        .email("Enter a valid email")
-        .required("Email is required"),
-      public_wallet_address: yup
-        .string("Public Wallet Address")
-        .required("Wallet Address is reequired."),
-      password: mode === "create" 
-        ? yup
-            .string("Enter your password")
-            .min(8, "Password should be at least 8 characters")
-            .required("Password is required")
-        : yup.string("Enter your password").notRequired(),
-    });
+  yup.object({
+    first_name: yup.string("Enter First Name").required("First Name is required"),
+    last_name: yup.string("Enter Last Name").required("Last Name is required"),
+    email: yup
+      .string("Enter your email")
+      .email("Enter a valid email")
+      .required("Email is required"),
+    public_wallet_address: yup
+      .string("Public Wallet Address")
+      .required("Wallet Address is reequired."),
+    password: mode === "create"
+      ? yup
+        .string("Enter your password")
+        .min(8, "Password should be at least 8 characters")
+        .required("Password is required")
+      : yup.string("Enter your password").notRequired(),
+  });
 
 export default function Form({ initialValues, onSubmit, title, buttonText, mode }) {
   const formik = useFormik({

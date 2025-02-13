@@ -36,7 +36,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/investor-landing",
-    element: <ProtectedRoute><InvestorLanding /></ProtectedRoute>,
+    element: <InvestorLanding />,
     errorElement: <ErrorPage />,
     
   },

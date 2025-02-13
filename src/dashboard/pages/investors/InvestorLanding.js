@@ -14,14 +14,50 @@ import {
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import WarningIcon from '@mui/icons-material/Warning';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const InvestorLanding = () => {
+
   const [userDetail, setUserDetail] = useState(null);
+
+  const [currentPrice, setCurrentPrice] = useState(null);
+
+  const getToken = () => {
+    const userDetail = localStorage.getItem('userDetail');
+
+    if (userDetail) {
+        const parsed = JSON.parse(userDetail);
+        return parsed.token;
+    }
+    return null;
+};
+
+  const fetchCurrentPrice = async () => {
+    const token = getToken();
+    try {
+        const response = await axios.get(
+            `${process.env.REACT_APP_API_URL}/api/v1/priceOracle/current`,
+            {
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        setCurrentPrice(response.data.data);
+    } catch (error) {
+        toast.error("Failed to fetch current price");
+    }
+};
+
+  
 
   useEffect(() => {
     const userDetailStr = localStorage.getItem('userDetail');
     if (userDetailStr) {
       setUserDetail(JSON.parse(userDetailStr));
+      fetchCurrentPrice();
     }
   }, []);
 
@@ -56,10 +92,29 @@ const InvestorLanding = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Welcome, {userDetail.first_name} {userDetail.last_name}
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary">
-          Your Investment Dashboard
-        </Typography>
+        {currentPrice && (
+                                <>
+                                    <Typography variant="h5" sx={{ mb: 1 }}>
+                                        Current NBTA Value
+                                    </Typography>
+                                    <Typography variant="h3" sx={{ color: 'primary.main' }}>
+                                        ${currentPrice.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                    </Typography>
+                                    <Typography variant="caption" color="text.secondary">
+                                        Last updated: {currentPrice.createdAt ?
+                                            new Date(currentPrice.createdAt).toLocaleDateString('en-US', {
+                                                weekday: 'short',
+                                                year: 'numeric',
+                                                month: 'short',
+                                                day: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }) : 'Never'}
+                                    </Typography>
+                                    </>
+                            )}
       </Box>
+
 
       <Grid container spacing={3}>
         {/* Profile Card */}
