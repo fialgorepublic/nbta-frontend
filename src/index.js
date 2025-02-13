@@ -13,6 +13,8 @@ import AllInvestments from "./dashboard/pages/investments/all";
 import NewInvestment from "./dashboard/pages/investments/create";
 import Earning from "./dashboard/pages/earnings/create";
 
+import InvestorLanding from "./dashboard/pages/investors/InvestorLanding";
+
 import PriceOracle from "./dashboard/pages/priceOracle/page";
 
 
@@ -28,6 +30,12 @@ const router = createBrowserRouter([
     path: "/",
     element: <LandingPage />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path: "/investor-landing",
+    element: <InvestorLanding />,
+    errorElement: <ErrorPage />,
+    
   },
   {
     path: "/",

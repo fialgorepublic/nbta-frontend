@@ -68,6 +68,15 @@ export default function SignIn(props) {
     },
   });
 
+  const decodeToken = (token) => {
+    try {
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  };
+
   const loginUser = (data) => {
     setLoader(true);
     axios
@@ -78,9 +87,19 @@ export default function SignIn(props) {
       )
       .then((response) => {
         localStorage.setItem("token", response.data.data.token);
+        localStorage.setItem("userDetail", response.data.data);
         setUserDetail(response.data.data);
         setLoader(false);
-        navigate("/dashboard");
+
+        const decodedToken = decodeToken(response.data.data.token);
+
+
+
+        if (decodedToken && decodedToken.role === 'investor') {
+          navigate("/investor-landing");
+        } else {
+          navigate("/dashboard");
+        }
         toast.success("Logged in Successfully");
       })
       .catch((error) => {

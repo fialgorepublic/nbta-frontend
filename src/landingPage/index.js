@@ -4,6 +4,7 @@ import FeatureSection from "./components/FeatureSection";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer"
 import { Helmet } from "react-helmet";
+
 const LandingPage = () => {
   return (
     <>
