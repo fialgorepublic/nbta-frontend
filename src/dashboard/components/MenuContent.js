@@ -56,12 +56,6 @@ const menuItems = [
     icon: <MonetizationOn />, 
     url: '/price-oracle',
     roles: [ROLES.ADMIN] // Everyone can see price oracle
-  },
-  {
-    text: 'Admin Settings',
-    icon: <SettingsIcon />,
-    url: '/admin/settings',
-    roles: [ROLES.ADMIN] // Admin only section
   }
 ];
 

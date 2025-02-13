@@ -25,6 +25,9 @@ import { Toaster } from "react-hot-toast";
 import LandingPage from "./landingPage";
 import { UserProvider } from "./contextStore/userContext";
 
+
+import ProtectedRoute from "./routes/ProtectedRoute";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -33,13 +36,13 @@ const router = createBrowserRouter([
   },
   {
     path: "/investor-landing",
-    element: <InvestorLanding />,
+    element: <ProtectedRoute><InvestorLanding /></ProtectedRoute>,
     errorElement: <ErrorPage />,
     
   },
   {
     path: "/",
-    element: <Root />,
+    element: <ProtectedRoute><Root /></ProtectedRoute>,
     errorElement: <ErrorPage />,
     children: [
       {

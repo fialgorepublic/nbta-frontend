@@ -51,6 +51,20 @@ export default function SignIn(props) {
     theme.palette.mode === "dark" ? lightHeaderImage : darkHeaderImage;
 
   useEffect(() => {
+    const userDetails = JSON.parse(localStorage.getItem("userDetail") || '{}');
+    const token = userDetails.token;
+
+    if (token) {
+      const decodedToken = decodeToken(token);
+      if (decodedToken && decodedToken.role === 'investor') {
+        navigate("/investor-landing");
+      } else {
+        navigate("/dashboard");
+      }
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       navigate("/dashboard");
@@ -77,6 +91,8 @@ export default function SignIn(props) {
     }
   };
 
+
+
   const loginUser = (data) => {
     setLoader(true);
     axios
@@ -95,12 +111,15 @@ export default function SignIn(props) {
 
 
 
-        if (decodedToken && decodedToken.role === 'investor') {
-          navigate("/investor-landing");
-        } else {
-          navigate("/dashboard");
-        }
-        toast.success("Logged in Successfully");
+        // Small timeout to ensure localStorage is set
+        setTimeout(() => {
+          if (decodedToken && decodedToken.role === 'investor') {
+            navigate("/investor-landing");
+          } else {
+            navigate("/dashboard");
+          }
+          toast.success("Logged in Successfully");
+        }, 100);
       })
       .catch((error) => {
         setLoader(false);
@@ -150,7 +169,7 @@ export default function SignIn(props) {
             <Typography
               component="h1"
               variant="h4"
-              sx={{ width: "100%",marginTop:"30px", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+              sx={{ width: "100%", marginTop: "30px", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
             >
               Sign in
             </Typography>
