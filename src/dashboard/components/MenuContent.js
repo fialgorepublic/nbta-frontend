@@ -8,13 +8,15 @@ import Stack from '@mui/material/Stack';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
+import MonetizationOn from '@mui/icons-material/MonetizationOn';
 import { Link, useLocation } from 'react-router-dom';
 
 const mainListItems = [
   { text: 'Home', icon: <HomeRoundedIcon />, url: '/dashboard' },
   { text: 'Investors', icon: <PeopleRoundedIcon />, url: '/investors' },
   { text: 'Investments', icon: <AssignmentRoundedIcon />, url: '/investments' },
-  { text: 'Manage Earnings', icon: <AssignmentRoundedIcon />, url: '/earnings' }
+  { text: 'Manage Earnings', icon: <AssignmentRoundedIcon />, url: '/earnings' },
+  { text: 'Price Oracle', icon: <MonetizationOn />, url: '/price-oracle' }
 ];
 
 export default function MenuContent() {

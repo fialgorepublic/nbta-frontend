@@ -12,6 +12,12 @@ import EditInvestor from "./dashboard/pages/investors/update";
 import AllInvestments from "./dashboard/pages/investments/all";
 import NewInvestment from "./dashboard/pages/investments/create";
 import Earning from "./dashboard/pages/earnings/create";
+
+import PriceOracle from "./dashboard/pages/priceOracle/page";
+
+
+
+
 import VerifyKyc from "./dashboard/pages/investors/verify-kyc";
 import { Toaster } from "react-hot-toast";
 import LandingPage from "./landingPage";
@@ -60,6 +66,14 @@ const router = createBrowserRouter([
         path: "/earnings",
         element: <Earning />,
       },
+      {
+        path: "/price-oracle",
+        element: <PriceOracle />,
+      },
+
+
+
+      
     ],
   },
   {
