@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
+import {
   Box,
   Grid,
   Paper,
@@ -27,31 +27,31 @@ const InvestorLanding = () => {
     const userDetail = localStorage.getItem('userDetail');
 
     if (userDetail) {
-        const parsed = JSON.parse(userDetail);
-        return parsed.token;
+      const parsed = JSON.parse(userDetail);
+      return parsed.token;
     }
     return null;
-};
+  };
 
   const fetchCurrentPrice = async () => {
     const token = getToken();
     try {
-        const response = await axios.get(
-            `${process.env.REACT_APP_API_URL}/api/v1/priceOracle/current`,
-            {
-                headers: {
-                    'Authorization': `${token}`,
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
-        setCurrentPrice(response.data.data);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/v1/priceOracle/current`,
+        {
+          headers: {
+            'Authorization': `${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      setCurrentPrice(response.data.data);
     } catch (error) {
-        toast.error("Failed to fetch current price");
+      toast.error("Failed to fetch current price");
     }
-};
+  };
 
-  
+
 
   useEffect(() => {
     const userDetailStr = localStorage.getItem('userDetail');
@@ -93,26 +93,26 @@ const InvestorLanding = () => {
           Welcome, {userDetail.first_name} {userDetail.last_name}
         </Typography>
         {currentPrice && (
-                                <>
-                                    <Typography variant="h5" sx={{ mb: 1 }}>
-                                        Current NBTA Value
-                                    </Typography>
-                                    <Typography variant="h3" sx={{ color: 'primary.main' }}>
-                                        ${currentPrice.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                                    </Typography>
-                                    <Typography variant="caption" color="text.secondary">
-                                        Last updated: {currentPrice.createdAt ?
-                                            new Date(currentPrice.createdAt).toLocaleDateString('en-US', {
-                                                weekday: 'short',
-                                                year: 'numeric',
-                                                month: 'short',
-                                                day: 'numeric',
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            }) : 'Never'}
-                                    </Typography>
-                                    </>
-                            )}
+          <>
+            <Typography variant="h5" sx={{ mb: 1 }}>
+              Current NBTA Value
+            </Typography>
+            <Typography variant="h3" sx={{ color: 'primary.main' }}>
+              ${currentPrice.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              Last updated: {currentPrice.createdAt ?
+                new Date(currentPrice.createdAt).toLocaleDateString('en-US', {
+                  weekday: 'short',
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                }) : 'Never'}
+            </Typography>
+          </>
+        )}
       </Box>
 
 
@@ -172,7 +172,7 @@ const InvestorLanding = () => {
       {/* KYC Alerts */}
       <Box mt={3}>
         {userDetail.kyc_status === 'NotStarted' && (
-          <Alert 
+          <Alert
             severity="warning"
             icon={<WarningIcon />}
           >
@@ -182,7 +182,7 @@ const InvestorLanding = () => {
         )}
 
         {userDetail.kyc_status === 'Approved' && (
-          <Alert 
+          <Alert
             severity="success"
             icon={<CheckCircleIcon />}
           >
