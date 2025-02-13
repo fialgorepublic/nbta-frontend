@@ -1,4 +1,4 @@
-# nbta-backend
+# nbta-frontend
 
 ## Install
 
