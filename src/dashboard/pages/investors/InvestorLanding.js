@@ -152,6 +152,7 @@ const InvestorLanding = () => {
     <Box sx={{ p: 4, maxWidth: 'lg', mx: 'auto', bgcolor: 'background.default' }}>
 
 
+      {/* Logo Banner */}
       <Paper
         elevation={0}
         sx={{
@@ -164,7 +165,7 @@ const InvestorLanding = () => {
           borderRadius: 2
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }}>
           <Avatar
             sx={{ width: 56, height: 56 }}
             src={userDetail.profile_picture}
@@ -177,23 +178,35 @@ const InvestorLanding = () => {
             <Typography variant="h4" gutterBottom sx={{ mb: 1 }}>
               {userDetail.first_name} {userDetail.last_name}
             </Typography>
-            
           </Box>
         </Box>
 
-        <Button
-          variant="outlined"
-          color="primary"
-          startIcon={<LogoutIcon />}
-          onClick={handleLogout}
-          sx={{
-            borderRadius: 2,
-            textTransform: 'none',
-            px: 3
-          }}
-        >
-          Logout
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'center', flex: 1 }}>
+          <img
+            src="/logo192.png"
+            alt="Company Logo"
+            style={{
+              maxHeight: '60px',
+              width: 'auto',
+            }}
+          />
+        </Box>
+
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', flex: 1 }}>
+          <Button
+            variant="outlined"
+            color="primary"
+            startIcon={<LogoutIcon />}
+            onClick={handleLogout}
+            sx={{
+              borderRadius: 2,
+              textTransform: 'none',
+              px: 3
+            }}
+          >
+            Logout
+          </Button>
+        </Box>
       </Paper>
       {/* KYC Alerts */}
       <Box mt={3}>
