@@ -49,23 +49,16 @@ const InvestorLanding = () => {
   };
 
   const fetchTokenBalance = async () => {
-    console.log('Fetching token balance...');
     try {
-      //const connection = new Connection(import.meta.env.REACT_APP_SOLANA_RPC_URL);
-      const connection = new Connection('https://api.devnet.solana.com');
-      //console.log('Connected to Solana at:', import.meta.env.REACT_APP_SOLANA_RPC_URL);
+      const connection = new Connection(process.env.REACT_APP_SOLANA_RPC_URL);
 
-      const ownerPublicKey = new PublicKey('5nrmn87MudnZa2VGVoyFVbAEaU1RMZQbnjaU9XrDMqs4');
-      const tokenMint = new PublicKey('9dMjXyr6CC2mZjkgabVv4cQ1upkzEGpjYywsndcU8qzA');
+      const ownerPublicKey = new PublicKey(userDetail.public_wallet_address);
+      const tokenMint = new PublicKey(process.env.REACT_APP_TOKEN_MINT);
 
-      console.log('Fetching token accounts for owner:', ownerPublicKey.toString());
       const tokenAccounts = await connection.getTokenAccountsByOwner(
         ownerPublicKey,
         { programId: TOKEN_PROGRAM_ID }
       );
-
-
-      console.log('Token accounts received:', tokenAccounts);
 
       const tokenAccount = tokenAccounts.value.find(account => {
         const accountData = account.account.data;
@@ -74,9 +67,7 @@ const InvestorLanding = () => {
       });
 
       if (tokenAccount) {
-        console.log('Token account found:', tokenAccount.pubkey.toString());
         const balance = await connection.getTokenAccountBalance(tokenAccount.pubkey);
-        console.log('Balance received:', balance);
         setTokenBalance(balance.value.uiAmount);
       } else {
         console.log('No token account found');
@@ -118,11 +109,19 @@ const InvestorLanding = () => {
       console.log('User details found in localStorage');
       setUserDetail(JSON.parse(userDetailStr));
       fetchCurrentPrice();
-      fetchTokenBalance();
     } else {
       console.log('No user details found in localStorage');
     }
   }, []);
+
+  useEffect(() => {
+
+
+    if (userDetail && currentPrice) {
+      fetchTokenBalance();
+    }
+   
+  }, [userDetail, currentPrice]);
 
   if (!userDetail) {
     return (
