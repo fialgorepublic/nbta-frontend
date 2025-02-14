@@ -74,6 +74,7 @@ export default function EditInvestor() {
           first_name: user?.first_name || "",
           last_name: user?.last_name || "",
           email: user?.email || "",
+          public_wallet_address: user?.public_wallet_address || "",
           password: "",
         }}
         onSubmit={handleUpdateInvestor}
