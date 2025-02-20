@@ -17,10 +17,28 @@ export default function AllInvestors() {
   const [loader, setLoader] = useState(false);
   const [investors, setInvestors] = useState([]);
 
+  const getToken = () => {
+    const userDetail = localStorage.getItem("userDetail");
+
+    if (userDetail) {
+      const parsed = JSON.parse(userDetail);
+      return parsed.token;
+    }
+    return null;
+  };
+
   const handleDeleteClick = (id) => {
+    const token = getToken()
     setLoader(true);
     axios
-      .delete(`${process.env.REACT_APP_API_URL}/api/v1/users/${id}/delete`)
+      .delete(`${process.env.REACT_APP_API_URL}/api/v1/users/${id}/delete`,
+      {
+        headers: {
+            'Authorization': `${token}`,
+            'Content-Type': 'application/json'
+        }
+    }
+      )
       .then(function (response) {
         const users = investors.filter((investor) => investor._id != id);
         setInvestors(users);
@@ -30,8 +48,16 @@ export default function AllInvestors() {
   };
   useEffect(() => {
     setLoader(true);
+    const token = getToken();
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/v1/users/all-investors`)
+      .get(`${process.env.REACT_APP_API_URL}/api/v1/users/all-investors`,
+      {
+        headers: {
+            'Authorization': `${token}`,
+            'Content-Type': 'application/json'
+        }
+    }
+      )
       .then(function (response) {
         setInvestors(response.data.data);
         setLoader(false);

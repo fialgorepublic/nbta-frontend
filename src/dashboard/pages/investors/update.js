@@ -15,10 +15,26 @@ export default function EditInvestor() {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const getToken = () => {
+    const userDetail = localStorage.getItem("userDetail");
+
+    if (userDetail) {
+      const parsed = JSON.parse(userDetail);
+      return parsed.token;
+    }
+    return null;
+  };
+
   useEffect(() => {
     setLoader(true);
+    const token = getToken()
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/v1/users/${id}`)
+      .get(`${process.env.REACT_APP_API_URL}/api/v1/users/${id}`, {
+        headers: {
+            'Authorization': `${token}`,
+            'Content-Type': 'application/json'
+        }
+    })
       .then((response) => {
         setUser(response.data.data);
         setLoader(false);
@@ -29,15 +45,20 @@ export default function EditInvestor() {
       });
   }, [id]);
 
-  const handleUpdateInvestor = (values) => {
+  const handleUpdateInvestor = (data) => {
+    const token = getToken()
+    const config = {
+      headers: {
+        'Authorization': `${token}`,
+        'Content-Type': 'application/json'
+    }
+    }
     setLoader(true);
     axios
       .put(
         `${process.env.REACT_APP_API_URL}/api/v1/users/${id}/update`,
-        values,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
+        data,
+        config,
       )
       .then((response) => {
         setLoader(false);

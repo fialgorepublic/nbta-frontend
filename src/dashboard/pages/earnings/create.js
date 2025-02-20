@@ -46,10 +46,25 @@ export default function Earning(props) {
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
 
+  const getToken = () => {
+    const userDetail = localStorage.getItem("userDetail");
+
+    if (userDetail) {
+      const parsed = JSON.parse(userDetail);
+      return parsed.token;
+    }
+    return null;
+  };
+
   useEffect(() => {
     setLoader(true);
+    const token = getToken()
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/v1/users/verify-investors?userInvestments=true`)
+      .get(`${process.env.REACT_APP_API_URL}/api/v1/users/verify-investors?userInvestments=true`,
+      {
+        headers: { 'Authorization': `${token}`, "Content-Type": "application/json" },
+      }
+      )
       .then(function (response) {
         setInvestors(response.data.data);
         setLoader(false);
@@ -73,11 +88,16 @@ export default function Earning(props) {
     },
   });
 
-  const createInvestment = (values) => {
+  const createInvestment = (data) => {
+    const token = getToken()
+    const config = {
+      headers: { 'Authorization': `${token}`, "Content-Type": "application/json" },
+    }
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/v1/earnings/create`, values, {
-        headers: { "Content-Type": "application/json" },
-      })
+      .post(`${process.env.REACT_APP_API_URL}/api/v1/earnings/create`,
+      data,
+      config
+      )
       .then((response) => {
         navigate("/investments");
         toast.success("Investment created Successfully");

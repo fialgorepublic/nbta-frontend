@@ -18,11 +18,28 @@ import { Helmet } from "react-helmet";
 export default function AllInvestments() {
   const [investments, setInvestments] = useState([]);
   const [loader, setLoader] = useState(false);
+  const getToken = () => {
+    const userDetail = localStorage.getItem("userDetail");
+
+    if (userDetail) {
+      const parsed = JSON.parse(userDetail);
+      return parsed.token;
+    }
+    return null;
+  };
 
   useEffect(() => {
+    const token = getToken()
     setLoader(true);
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/v1/investments/list`)
+      .get(`${process.env.REACT_APP_API_URL}/api/v1/investments/list`,
+        {
+          headers: {
+            Authorization: `${token}`,
+            'Content-Type': 'Application/json',
+          }
+        }
+      )
       .then(function (response) {
         setLoader(false);
         setInvestments(response.data.data);

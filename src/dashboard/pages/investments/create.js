@@ -37,11 +37,26 @@ export default function NewInvestment(props) {
   const [investors, setInvestors] = useState([]);
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
+  const getToken = () => {
+    const userDetail = localStorage.getItem("userDetail");
+
+    if (userDetail) {
+      const parsed = JSON.parse(userDetail);
+      return parsed.token;
+    }
+    return null;
+  };
 
   useEffect(() => {
+    const token = getToken();
     setLoader(true);
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/v1/users/verify-investors`)
+      .get(`${process.env.REACT_APP_API_URL}/api/v1/users/verify-investors`, {
+        headers: {
+          Authorization: `${token}`,
+          "Content-Type": "application/json",
+        },
+      })
       .then(function (response) {
         setLoader(false);
         setInvestors(response.data.data);
@@ -64,12 +79,18 @@ export default function NewInvestment(props) {
     },
   });
 
-  const createInvestment = (values) => {
+  const createInvestment = (data) => {
     setLoader(true);
+    const token = getToken()
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/v1/investments`, values, {
-        headers: { "Content-Type": "application/json" },
-      })
+      .post(`${process.env.REACT_APP_API_URL}/api/v1/investments`, data,
+        {
+          headers: {
+            Authorization: `${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
         setLoader(false);
         navigate("/investments");

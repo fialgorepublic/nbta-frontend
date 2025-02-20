@@ -6,11 +6,28 @@ import toast from "react-hot-toast";
 export default function MainGrid() {
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false)
+  const getToken = () => {
+    const userDetail = localStorage.getItem("userDetail");
+
+    if (userDetail) {
+      const parsed = JSON.parse(userDetail);
+      return parsed.token;
+    }
+    return null;
+  };
 
   useEffect(() => {
+    const token = getToken();
     setLoader(true)
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/v1/users/investors-records`)
+      .get(`${process.env.REACT_APP_API_URL}/api/v1/users/investors-records`,
+      {
+        headers: {
+            'Authorization': `${token}`,
+            'Content-Type': 'application/json'
+        }
+    }
+      )
       .then(function (response) {
         setData(response.data.data);
         setLoader(false)

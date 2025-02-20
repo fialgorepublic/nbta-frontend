@@ -9,11 +9,22 @@ export default function NewInvestor() {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
 
-  const handleCreateInvestor = (values) => {
+  const handleCreateInvestor = (data) => {
+    const getToken = () => {
+      const userDetail = localStorage.getItem("userDetail");
+
+      if (userDetail) {
+        const parsed = JSON.parse(userDetail);
+        return parsed.token;
+      }
+      return null;
+    };
+
     setLoader(true);
+    const token = getToken();
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/v1/users/register`, values, {
-        headers: { "Content-Type": "application/json" },
+      .post(`${process.env.REACT_APP_API_URL}/api/v1/users/register`, data, {
+        headers: { 'Authorization': `${token}`, "Content-Type": "application/json" },
       })
       .then(() => {
         setLoader(false);
